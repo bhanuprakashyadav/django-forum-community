@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Community</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div class="logo-name">
+    <div class="title-container">
+        <h1>Forum Community</h1>
+        <button>Rules</button>
+        <button>Contact Us</button>
+    </div>
+    <div class="button-container">
+        <input type="text" class="search-bar" placeholder="Search...">
+        <button id="theme-toggle">🌙</button>
+        {% if user.is_authenticated %}
+            <div class="profile-button" onclick="toggleDropdown()">
+                {% if profile_pic %}
+                    <img src="{{ profile_pic }}" alt="{{ user.username }}">
+                {% else %}
+                    <img src="{% static 'images/default-profile-pic.jpg' %}" alt="{{ user.username }}">
+                {% endif %}
+                <span>{{ user.username }}</span>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="#Dashboard">Dashboard</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+        {% else %}
+            <button onclick="openLoginModal()">Log In</button>
+            <button onclick="openSignUpModal()">Sign Up</button>
+        {% endif %}
+    </div>
+</div>
+<hr>
+
+<!-- MAKE AJAX REQUEST TO SEND REPLY WITHOUT REFRESHING THE PAGE
+
+https://chatgpt.com/c/72bb9e22-dca5-44b5-8b1e-24b464128585 -->
+
+<div class="post-container">
+    <h2>{{ post.post_title }}</h2>
+    <p>{{ post.description }}</p>
+    <br>
+    <div class="all-post-replies" id="replies-container-{{ post.id }}">
+        {% for reply in post.replies.all %}
+        <div class="reply">
+            <p>{{ reply.reply_text }}</p>
+            <small>Posted by: {{ reply.user.username }} at {{ reply.created_at|date:"Y-m-d H:i:s" }}</small>
+        </div>
+        {% endfor %}
+
+       <form class="reply-form" data-post-id="{{ post.id }}" method="post">
+        {% csrf_token %}
+        <textarea id="reply_text" name="replyarea" placeholder="Reply..."></textarea>
+        <button type="submit">Reply</button>
+    </form>
+</div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('loginModal')">&times;</span>
+        <h2>Log In</h2>
+        <form action="{% url 'login' %}" method="post">
+            
+            {% csrf_token %}
+            <button>Sign in with Google</button>
+            <input type="text" placeholder="Username" name="username">
+            <input type="password" placeholder="Password" name="password">
+
+            {% if login_error %}
+                <div class="alert">
+                    {{ login_error }}
+                </div>
+            {% endif %}
+
+            <div class="remember-me">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Remember me</label>
+            </div>
+
+            <button type="submit">Sign In</button>
+        </form>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+        <p class="sign-up">Don't have an account? <a href="#" onclick="openSignUpModal()">Sign Up</a></p>
+    </div>
+</div>
+
+<!-- Sign Up Modal -->
+<div id="signUpModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('signUpModal')">&times;</span>
+        <h2>Sign Up</h2>
+        {% if signup_error %}
+            <div class="alert">
+                {{ signup_error }}
+            </div>
+        {% endif %}
+        <form action="{% url 'register' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button>Sign in with Google</button>
+            <input type="text" name="username" placeholder="Username">
+            <input type="email" name="email" placeholder="Email">
+            <input type="password" name="password" placeholder="Password">
+            <!-- <input type="file" name="profile_pic" placeholder="Profile Picture"> -->
+            <div class="terms">
+                <input type="checkbox" id="acceptTerms">
+                <label for="acceptTerms">I accept the <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a></label>
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p class="log-in">Already have an account? <a href="#" onclick="openLoginModal()">Log In</a></p>
+    </div>
+</div>
+
+<script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>
