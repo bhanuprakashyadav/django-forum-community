@@ -115,29 +115,27 @@ window.onclick = function(event) {
 }
 
 
-function dashboard_function()
-{
-//====WORK ON LATER====//
 document.addEventListener('DOMContentLoaded', () => {
     const profilePic = document.getElementById('profile_pic');
     const fileInput = document.getElementById('file-input');
 
-    profilePic.addEventListener('click', () => {
-        fileInput.click(); // Trigger the file input dialog
-    });
+    if (profilePic && fileInput) {
+        profilePic.addEventListener('click', () => {
+            fileInput.click(); // Trigger the file input dialog
+        });
 
-    fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                profilePic.src = e.target.result; // Update profile picture with selected file
-            };
-            reader.readAsDataURL(file); // Read file as data URL
-        }
-    });
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePic.src = e.target.result; // Update profile picture with selected file
+                };
+                reader.readAsDataURL(file); // Read file as data URL
+            }
+        });
+    }
 });
-}
 
 // function Cannot read properties of null (reading 'appendChild')() {
 //     var date = new Date();

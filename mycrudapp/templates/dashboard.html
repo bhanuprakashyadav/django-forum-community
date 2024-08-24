@@ -25,9 +25,9 @@
         <div class="profile-picture">
             
             {% if profile_pic %}
-            <img src="{{ profile_pic }}" alt="{{ user.username }}">
+            <img id="profile_pic" src="{{ profile_pic }}" alt="{{ user.username }}">
             {% else %}
-                <img src="{% static 'images/default-profile-pic.jpg' %}" alt="{{ user.username }}">
+                <img id="profile_pic" src="{% static 'images/default-profile-pic.jpg' %}" alt="{{ user.username }}">
             {% endif %}
 
             <!-- Hidden input for file upload -->
