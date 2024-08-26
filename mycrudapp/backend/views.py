@@ -3,7 +3,8 @@ from django.http import HttpResponse, HttpRequest, JsonResponse
 from .models import UserField, PostField, ReplyField
 from django.contrib.auth.models import User
 from django.contrib import auth
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from .forms import * # for form validation
@@ -48,23 +49,37 @@ def index(request: HttpRequest):
 
 
 def login(request:HttpRequest):
+    posts = PostField.objects.all().order_by('-created_at')
+    context = {'posts' : posts, 'login_error': 'Username or password field is missing'}
     if request.method == 'POST':
         try:
             username = request.POST['username'] #name='username' in html
             password = request.POST['password']
+            rememberMe = request.POST.get('rememberMe') == 'on'
         except KeyError:
-            return render(request, 'index.html', {'login_error': 'Username or password field is missing'})
+            return render(request, 'index.html', context)
 
         user = authenticate(username=username, password=password)
         
-        if user is not None:
-            auth.login(request, user)
-            return redirect('/')
-            # return redirect('index')
+        if not rememberMe:
+            if user is not None:
+                request.session.set_expiry(0)
+                auth.login(request, user)
+                return redirect('/')
+            else:
+                return render(request, 'index.html', context)
+                
         else:
-            return render(request, 'index.html', {'login_error': 'Username or password is incorrect'})
+            if user is not None:
+                request.session.set_expiry(1209600)
+                auth.login(request, user)
+                return redirect('/')
+            # return redirect('index')
+            else:
+                return render(request, 'index.html', context)
+            
     
-    return render(request, 'index.html')
+    return render(request, 'index.html', context)
     # return redirect('index') #'index' defined in urls
 
 
@@ -72,21 +87,38 @@ def login(request:HttpRequest):
 # User (model) - https://docs.djangoproject.com/en/5.0/ref/contrib/auth/#django.contrib.auth.models.User
 
 def register(request):
+    posts = PostField.objects.all().order_by('-created_at')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         email = request.POST['email']
+        isAgreed = request.POST.get('acceptTerms') == 'on'
         
+        
+        # Check if the username or email already exists and if terms are agreed
         if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
-            return render(request, 'index.html', {'signup_error': 'Username or Email already exists'})
-        
-        # Create and save the User instance
+            return render(request, 'index.html', {'signup_error': 'Username or Email already exists', 'posts' : posts})
+    
+        if not isAgreed:
+            return render(request, 'index.html', {'signup_error': 'Please agree to the terms and conditions', 'posts':posts})
+
+        # Create the User instance
         user = User.objects.create_user(username=username, password=password, email=email)
+
+        # Create the UserField instance
+        user_field = UserField.objects.create(user=user, usrname=username, has_agreed=isAgreed)
+        user_field.save()
+        
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            # Log the user in immediately after registration
+            auth.login(request, user)
+            return redirect('/')
+        else:
+            return render(request, 'index.html', {'login_error': 'Username or password is incorrect', 'posts':posts})
     
-        # Log the user in immediately after registration
-        auth.login(request, user)
-    
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'posts':posts})
 
 
 def logout(request:HttpResponse):
@@ -154,14 +186,64 @@ def dashboard_view(request:HttpRequest, username:str):
     # <a href="{% url 'dashboard_view' user.username %}">Dashboard</a>
     # here The user object is available in both the view and the template without you having to pass it explicitly.
     # Django's authentication middleware adds it to the request object and makes it available in templates.
-    context = {'username': username} # 'username' = inhtml, username = the above paramter
+    #context = {'username': username} # 'username' = inhtml, username = the above paramter
+    
     user_field = get_object_or_404(UserField, user=request.user) # better to raise 404 instead of DNE
-    context['account_data'] = user_field.usr_created_at
-    return render(request, 'dashboard.html', context)
+    if request.method == 'POST':
+        
+        # Handle profile 
+        profile_pic = request.FILES.get('profile_pic')
+        print(f"I get profilepic {profile_pic}")
+        if profile_pic:
+            user_field.profile_pic = profile_pic
+            user_field.save()
+        
+        #Handle email
+        
+        # Find corresp. user's email first
+        get_usr = get_object_or_404(User, username=request.user.username)
+       
+        dashboard_email = request.POST.get('dashboard_email')
+                
+        if dashboard_email and dashboard_email != get_usr.email:
+            current_mail = User.objects.update(email=dashboard_email)
+            if current_mail != dashboard_email:
+                print("Updated")
+            else:
+                print("Not updated")
+        else:
+            print("No change")
+            
+        dashboard_passwd = request.POST.get('dashboard_password')
+        if dashboard_passwd:
+            
+            # Hash the new password-- Use User.set_password() instead
+            #hashed_password = make_password(dashboard_passwd)
+            
+            # Update the password
+            # updated = User.objects.filter(username=request.user.username).update(password=hashed_password)
+            get_usr.set_password(dashboard_passwd)
+            get_usr.save()     
+            
+            #Update session to prevent logout
+            update_session_auth_hash(request, get_usr)
+            
+            print("Password changed")
+        else:
+            print("No password was provided")
+                  
+            
+        
+            
+        
+        return redirect('dashboard_view', username=request.user.username)
 
-@login_required
-def change_profile_pic(request:HttpRequest):
-    ...
+    context = {
+        'username': username,
+        'account_data': user_field.usr_created_at,
+        'profile_pic': user_field.profile_pic,
+    }
+    return render(request, 'dashboard.html', context)
 
     
 @login_required

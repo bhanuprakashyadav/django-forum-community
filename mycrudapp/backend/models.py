@@ -19,6 +19,7 @@ class UserField(models.Model):
     usr_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     usr_created_at = models.DateTimeField(auto_now_add=True)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True, null=True)
+    has_agreed = models.BooleanField(default=False,blank=False)
 
     def __str__(self):
         return self.usrname

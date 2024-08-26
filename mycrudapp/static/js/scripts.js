@@ -24,6 +24,7 @@ function create_post() {
 
 function replyToPost() { //sent to server that is views.py
     const form = document.querySelector('.reply-form');
+    if(form){
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             const replyText = this.querySelector('textarea[name="replyarea"]').value;
@@ -84,6 +85,7 @@ function replyToPost() { //sent to server that is views.py
             console.log("Error is " + error);
             });
         });
+    }
     
 }
 
@@ -116,25 +118,29 @@ window.onclick = function(event) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const profilePic = document.getElementById('profile_pic');
-    const fileInput = document.getElementById('file-input');
+    document.getElementById('upload-button').addEventListener('click', function() { //event passed here too, we just dont need
+        document.getElementById('file-input').click();
+    });
 
-    if (profilePic && fileInput) {
-        profilePic.addEventListener('click', () => {
-            fileInput.click(); // Trigger the file input dialog
-        });
-
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    profilePic.src = e.target.result; // Update profile picture with selected file
-                };
-                reader.readAsDataURL(file); // Read file as data URL
-            }
-        });
-    }
+    
+    document.getElementById('file-input').addEventListener('change', function(event) {//event passed by browser by default,
+        const fileInput = event.target; // = HTMLInputElement , file input element that triggered the change event.
+        console.log("element is " + event.target);
+        if(fileInput.files && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            //As the file been read fully, onload, execute the callback function(e)...
+            reader.onload = function(e) { //event fired from selecting file
+                // convert img to base64
+                // image to the Base64-encoded data of the selected file, effectively displaying the chosen image in the browser
+                document.getElementById('profile_pic').src = e.target.result; 
+                console.log("src is " + e.target.result);
+                console.log("file is " + file);
+            };
+            reader.readAsDataURL(file); //representing the file's data as a base64 encoded string.
+        }
+    });
 });
 
 // function Cannot read properties of null (reading 'appendChild')() {

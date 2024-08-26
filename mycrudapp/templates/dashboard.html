@@ -10,7 +10,8 @@
 <body>
     <div class="logo-name">
         <div class="title-container">
-            <h1>Forum Community</h1>
+            <a id="logo-link" href="{% url 'index' %}">
+                <h1 class="mc">Forum Community</h1> </a>
             <button>Rules</button>
             <button>Contact Us</button>
         </div>
@@ -21,24 +22,36 @@
     </div>
     <hr>
 
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
     <div class="profile-section">
         <div class="profile-picture">
             
             {% if profile_pic %}
-            <img id="profile_pic" src="{{ profile_pic }}" alt="{{ user.username }}">
+            <img id="profile_pic" name="profile_pic" src="{{ profile_pic.url }}" alt="{{ user.username }}">
             {% else %}
                 <img id="profile_pic" src="{% static 'images/default-profile-pic.jpg' %}" alt="{{ user.username }}">
             {% endif %}
 
             <!-- Hidden input for file upload -->
-            <input type="file" id="file-input" style="display:none;">
+            <input type="file" id="file-input"  name="profile_pic" style="display:none;">
+
+            
         </div>
-        <form class="profile-form">
+        <div class="upload-button">
+            <button type="button" id="upload-button">Select Image</button>
+            <button type="submit">Save Changes</button>
+        </div>
+        </div>
+        </form>
+        <form class="profile-form" method="post">
+            {% csrf_token %}
             <label for="email">Change your Email:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your new email">
+            <input type="email" id="email" name="dashboard_email" placeholder="Enter your new email">
 
             <label for="password">Change your Password:</label>
-            <input type="password" id="password" name="password" placeholder="Enter your new password">
+            <input type="password" id="password" name="dashboard_password" placeholder="Enter your new password">
 
             <button type="submit">Save Changes</button>
         </form>
