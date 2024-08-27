@@ -178,8 +178,6 @@ def post(request:HttpRequest, post_id):
     }
     return render(request, 'post_bp.html', context)
 
-
-
 # https://docs.djangoproject.com/en/5.0/ref/templates/api/#built-in-template-context-processors
 @login_required
 def dashboard_view(request:HttpRequest, username:str):

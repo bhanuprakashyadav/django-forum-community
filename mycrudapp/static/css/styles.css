@@ -1,3 +1,46 @@
+.create-post-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 800px;
+    background: #fff;
+   
+}
+.create-post-container h2 {
+    margin-bottom: 10px;
+}
+.create-post-container textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+}
+
+.create-post-container .formatting-buttons {
+    margin-bottom: 10px;
+}
+.create-post-container .formatting-buttons button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    font-size: 1em;
+}
+.create-post-container .create-button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.create-post-container .create-button:hover {
+    background-color: #0056b3;
+}
+
 /* Profile Section Styles */
 .profile-section {
     padding: 20px;
@@ -52,17 +95,32 @@
     cursor: pointer;
 }
 
+
 .account-created {
     margin-top: 10px;
     font-style: italic;
     color: #666;
 }
 
+.light-mode input {
+    color: #fff; /* Text color */
+    /*background-color: #eee; /* Background color */
+    border-color: #ddd; /* Border color */
+}
 
+.dark-mode input {
+    color: #333; /* Text color */
+   /* background-color: #333; /* Background color */
+    border-color: #555; /* Border color */
+}
 
-
+p, h1, h2, small, span {
+    color: var(--font-color);
+  }
 
 body {
+    background-color: var(--bg-color);
+    color: var(--font-color);
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -143,13 +201,120 @@ body {
 }
 .profile-button span {
     font-size: 1.2em;
-    color: #333;
+    color: var(--font-color);
 }
 .post-content {
     display: flex;
     align-items: center;
     flex: 1;
 }
+
+.reply-form {
+    position: relative; /* Ensure that the button is positioned relative to the form */
+    display: flex;
+    flex-direction: column;
+    width: fit-content; /* Adjust the width as needed */
+}
+.reply-form button
+{
+    margin-top: 20px;
+}
+
+.reply {
+    margin-left: 50px; /* Adjust the value as needed */
+    position: relative; /* This allows absolute positioning of child elements */
+    padding: 10px;
+    /*border: 1px solid #ddd;*/
+    margin-bottom: 10px;
+    background-color: var(--bg-color); /* Adjust based on theme */
+}
+
+/* Style the three dots */
+.dropdownbtn {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    gap: 1px; /* Space between dots */
+}
+
+.dropdownbtn li {
+    width: 5px; /* Width of each dot */
+    height: 5px; /* Height of each dot */
+    background-color: var(--font-color); /* Color of the dots */
+    border-radius: 50%; /* Make the dots round */
+}
+
+/* Style the dropdown menu */
+.dropdownPost-content {
+    display: none; /* Hide menu by default */
+    position: absolute;
+    top: 25px; /* Adjust based on the position of dots */
+    right: 4px;
+    background-color: #fff; /* Background color of menu */
+    border: 1px solid #ddd; /* Border around menu */
+    /*box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: add shadow */
+    z-index: 1000; /* Ensure dropdown is on top */
+}
+
+.dropdownPost-content a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #000; /* Text color of menu items */
+}
+
+.dropdownPost-content a:hover {
+    background-color: #f0f0f0; /* Background color on hover */
+}
+
+/* Show menu when clicked */
+.dropdownbtn.show .dropdownPost-content {
+    display: block;
+}
+
+#pls-login
+{
+    margin-left: 8px;
+}
+
+#reply_text {
+    margin-left: 50px;
+    width: 500px; /* Makes the textarea take the full width of its container */
+    height: 50px; /* Sets the height to 150px */
+    padding: 10px;
+    margin-bottom: 5px;
+    resize: none;
+    color: var(--font-color);
+    background-color: var(--bg-color);
+    font-size: 16px; /* Adjusts the font size */
+    /* Add space at the bottom to avoid overlapping with the button */
+    
+}
+
+#reply_text::placeholder
+{
+    color: var(--font-color);
+    
+}
+
+.reply-form button {
+    position: absolute;
+    width: 90px;
+    right: 10px; /* Position the button 10px from the right of the textarea */
+    bottom: 10px; /* Position the button 10px from the bottom of the textarea */
+}
+
+#post-title
+{
+    margin-left: 10px;
+}
+
 .post-item img {
     border-radius: 50%;
     width: 40px;
@@ -213,7 +378,7 @@ body {
     background-color: rgba(0,0,0,0.4);
 }
 .modal-content {
-    background-color: #fefefe;
+    background-color: var(--bg-color);
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
@@ -287,6 +452,13 @@ body {
 }
 
 .dark-mode {
-    background-color: #333;
-    color: #fff;
+    --font-color: #fff;
+    --bg-color: #333;
 }
+
+.light-mode
+{
+    --font-color: #333;
+    --bg-color: #fff;
+}
+

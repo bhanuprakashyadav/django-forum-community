@@ -13,8 +13,8 @@
     <div class="title-container">
         <a id="logo-link" href="{% url 'index' %}">
             <h1 class="mc">Forum Community</h1> </a>
-        <button>Rules</button>
-        <button>Contact Us</button>
+            <h4>Rules</h4>
+            <h4>Contact Us</h4>
     </div>
     <div class="button-container">
         <input type="text" class="search-bar" placeholder="Search...">
@@ -45,24 +45,48 @@
 https://chatgpt.com/c/72bb9e22-dca5-44b5-8b1e-24b464128585 -->
 
 <div class="post-container">
-    <h2>{{ post.post_title }}</h2>
-    <p>{{ post.description }}</p>
+    <small id="post_info" name="post_info>"> Posted by {{ post.user }} on {{ post.created_at }}  </small>
+    <h2 id="post-title">{{ post.post_title }}</h2>
+    <p id="post-title">{{ post.description }}</p>
     <br>
     <hr>
     <div class="all-post-replies" id="replies-container-{{ post.id }}">
         {% for reply in post.replies.all %}
         <div class="reply">
             <p>{{ reply.reply_text }}</p>
-            <small>Replied by: {{ reply.user.usrname }} at {{ reply.created_at|date:"Y-m-d H:i:s" }}</small>
+            <div class='dropdownPosts'>
+                <!-- three dots -->
+                <ul class='dropdownbtn icons btn-right showLeft' onclick='showDropdown(event)'>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <!-- menu -->
+                <div class='dropdownPost-content'>
+                    {% if user.is_authenticated %}
+                    <a href='#reply' onclick="scrollToReply()">Reply</a>
+                    <a href='#share'>Share</a>
+                    <a href='#delete'>Delete</a>
+                    <a href='#report'>Report</a>
+                    {% else %}
+                    <a href='#share'>Share</a>
+                    {% endif %}
+                </div>
+            </div>
+            <small>Replied by: <b>{{ reply.user.usrname }}</b> at <b>{{ reply.created_at|date:"Y-m-d H:i:s" }}</b></small>
         </div>
         <hr>
         {% endfor %}
-
+        
+        {% if user.is_authenticated %}
        <form class="reply-form" data-post-id="{{ post.id }}" method="post">
         {% csrf_token %}
         <textarea id="reply_text" name="replyarea" placeholder="Reply..."></textarea>
         <button type="submit">Reply</button>
     </form>
+    {% else %}
+        <p id="pls-login">Please <a href="#" onclick="openLoginModal()">login</a> to reply.</p>
+    {% endif %}
 </div>
 
 <!-- Login Modal -->

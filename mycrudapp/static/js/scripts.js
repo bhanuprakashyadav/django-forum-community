@@ -69,7 +69,8 @@ function replyToPost() { //sent to server that is views.py
                     newReply.className = 'reply';
                     newReply.innerHTML = `
                         <p>${data.reply_text}</p>
-                        <small>Posted by: ${data.user} at ${data.created_at}</small>
+                        <small>Replied by: <b>${data.user}</b> at <b>${data.created_at}</b></small>
+                        <hr>
                     `;
                     const repliesContainer = document.getElementById(`replies-container-${postId}`);
                     repliesContainer.insertBefore(newReply, repliesContainer.lastElementChild);
@@ -92,12 +93,29 @@ function replyToPost() { //sent to server that is views.py
 //The function replyToPost is executed when the DOM content is fully loaded 
 document.addEventListener('DOMContentLoaded', replyToPost);
 
+function scrollToReply()
+{
+    var textarea = document.getElementById('reply_text');
+    textarea.scrollIntoView({behavior: 'smooth'});
+    textarea.focus();
+}
+
 
 function openLoginModal() {
+
+    //Check if signup modal is opened if so close it
+    if(document.getElementById('signUpModal').style.display === 'block')
+    {
+        document.getElementById('signUpModal').style.display = 'none';
+    }
     document.getElementById('loginModal').style.display = 'block';
 }
 
 function openSignUpModal() {
+    if(document.getElementById('loginModal').style.display === 'block')
+        {
+            document.getElementById('loginModal').style.display = 'none';
+        }
     document.getElementById('signUpModal').style.display = 'block';
 }
 
@@ -143,6 +161,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+function showDropdown(event) {
+    event.stopPropagation();
+    const dropdownContent = event.currentTarget.nextElementSibling;
+    dropdownContent.style.display = (dropdownContent.style.display === 'block') ? 'none' : 'block';
+}
+
+// Close dropdown if clicking outside
+window.onclick = function(event) {
+    if (!event.target.matches('.dropdownbtn, .dropdownbtn *')) {
+        var dropdowns = document.getElementsByClassName("dropdownPost-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.style.display === 'block') {
+                openDropdown.style.display = 'none';
+            }
+        }
+    }
+};
+
+
+function formatText(command) {
+    document.execCommand(command);
+}
+
 // function Cannot read properties of null (reading 'appendChild')() {
 //     var date = new Date();
 //     var options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -171,7 +213,26 @@ document.addEventListener('click', function(event) {
 });
 
 var themeToggle = document.getElementById('theme-toggle');
+
+// Check stored theme preference on page load
+if (window.localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeToggle.textContent = '☀️';
+} else {
+    document.body.classList.add('light-mode');
+    themeToggle.textContent = '🌙';
+}
+
 themeToggle.addEventListener('click', function() {
-    document.body.classList.toggle('dark-mode');
-    themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    if (document.body.classList.contains('dark-mode')) {
+        document.body.classList.remove('dark-mode');
+        document.body.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
+        themeToggle.textContent = '🌙';
+    } else {
+        document.body.classList.remove('light-mode');
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        themeToggle.textContent = '☀️';
+    }
 });
