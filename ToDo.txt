@@ -1,10 +1,9 @@
 3. Later: Add notification when user repls to the user. Add necessary UI later in HTML.
-4. Later: Maintain a counter of how much starred a Post is. [❌-Cancelled]
-6. Later: Let other see the profile of other users - [placeholder only]
 8. For how many users are online use Websockets.
-9. Introduce pagination. No more than see 10 reply unless clicked load more.
 14. Implement REST API
 15. Implement Caching
+
+{{}} is for passing varibale from views py to html
 
 
 Djanog super user
