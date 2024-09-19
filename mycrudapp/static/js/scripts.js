@@ -32,8 +32,9 @@ function replyToPost() { //sent to server that is views.py
             //Gets the CSRF token, which is REQUIRED by Django to validate POST requests.
             const csrfToken = this.querySelector('input[name="csrfmiddlewaretoken"]').value;
             const postId = this.getAttribute('data-post-id');
+            const replyId = this.getAttribute('data-reply-id');
 
-            console.log('Submitting reply:', replyText, 'Post ID:', postId);
+            console.log('Submitting reply:', replyText, 'Post ID:', postId, " Reply Id:", replyId);
 
             fetch('/post_reply/', {  //A POST request is sent to the /post_reply/ endpoint using the fetch API.
                 method: 'POST',
@@ -59,7 +60,7 @@ function replyToPost() { //sent to server that is views.py
                         To set a request body, pass it as the body option:
                 
                 */
-                body: JSON.stringify({ post_id: postId, replyarea: replyText })
+                body: JSON.stringify({ post_id: postId, replyarea: replyText, reply_id:replyId})
             })
             .then(response => response.json()) //if PROMISE resolved
             .then(data => { //data sent from server
@@ -96,10 +97,97 @@ document.addEventListener('DOMContentLoaded', replyToPost);
 function scrollToReply()
 {
     var textarea = document.getElementById('reply_text');
-    textarea.scrollIntoView({behavior: 'smooth'});
-    textarea.focus();
+    if(textarea){
+        textarea.scrollIntoView({behavior: 'smooth'});
+        textarea.focus();
+    }
+    else
+    {
+        window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+    }
 }
 
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0,name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+   }
+
+function delete_reply(replyId, postId) {
+    console.log('Deleting reply with ID:', replyId, 'for post:', postId);
+
+    fetch(`/post/${postId}/reply/${replyId}/delete/`, {
+        method: 'POST',  // You can also use 'POST', but im using DELETE here
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')  // Include CSRF token for security, since it is POST, required
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(`Current User is ${data.current_usr} Replied by ${data.reply_user}`)
+        
+        if (data.success) {
+            // Remove the reply element from the DOM
+            const replyElement = document.querySelector(`[data-reply-id="${replyId}"]`);
+            if (replyElement) {
+                replyElement.remove();
+                console.log("Reply Element Removed")
+            }
+        } else {
+            console.log("Error:", data.message);
+        }
+    })
+    .catch(error => {
+        console.log('Error is :', error);
+    });
+}
+
+async function report_post()
+{
+    const isUserLoggedIn = await check_auth();
+    if (isUserLoggedIn)
+    {
+        alert("Reported!")
+    }else{
+        alert("Log in first")
+    }
+}
+
+async function check_auth() {
+    try {
+        const response = await fetch('/check_login/', {
+            method: 'GET',
+        });
+        const data = await response.json();
+        if (data.authenticated) {
+            console.log("Data is true", data.username);
+            return true;
+        } else {
+            console.log("Data is false", data.username);
+            return false;
+        }
+    } catch (error) {
+        console.error('Error is:', error);
+        return false; 
+    }
+}
 
 function openLoginModal() {
 
