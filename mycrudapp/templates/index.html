@@ -2,86 +2,96 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Forum Community</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
     <div class="logo-name">
-        <div class="title-container">
-            <a id="logo-link" href="{% url 'index' %}">
-            <h1 class="mc">Forum Community</h1> </a>
-            <h4>Rules</h4>
-            <h4>Contact Us</h4>
+      <div class="title-container">
+        <a id="logo-link" href="{% url 'index' %}">
+          <h1 class="mc">Forum Community</h1>
+        </a>
+        <h4>Rules</h4>
+        <h4>Contact Us</h4>
+      </div>
+      <div class="button-container">
+        <input
+          type="text"
+          class="search-bar"
+          id="search-input"
+          placeholder="Search..."
+        />
+        <div id="search-results"></div>
+        <button id="theme-toggle">🌙</button>
+        {% if user.is_authenticated %}
+        <div class="profile-button" onclick="toggleDropdown()">
+          {% if profile_pic %}
+          <img src="{{ profile_pic }}" alt="{{ user.username }}" />
+          {% else %}
+          <img
+            src="{% static 'images/default-profile-pic.jpg' %}"
+            alt="{{ user.username }}"
+          />
+          {% endif %}
+          <span>{{ user.username }}</span>
         </div>
-        <div class="button-container">
-            <input type="text" class="search-bar" placeholder="Search...">
-            <button id="theme-toggle">🌙</button>
-            {% if user.is_authenticated %}
-                <div class="profile-button" onclick="toggleDropdown()">
-                    {% if profile_pic %}
-                        <img src="{{ profile_pic }}" alt="{{ user.username }}">
-                    {% else %}
-                        <img src="{% static 'images/default-profile-pic.jpg' %}" alt="{{ user.username }}">
-                    {% endif %}
-                    <span>{{ user.username }}</span>
-                </div>
-                <div class="dropdown-menu" id="dropdown-menu">
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'dashboard_view' user.username %}">Dashboard</a>
-                    {% endif %}
-                    <a href="{% url 'logout' %}">Logout</a>
-                </div>
-            {% else %}
-                <button onclick="openLoginModal()">Log In</button>
-                <button onclick="openSignUpModal()">Sign Up</button>
-            {% endif %}
+        <div class="dropdown-menu" id="dropdown-menu">
+          {% if user.is_authenticated %}
+          <a href="{% url 'dashboard_view' user.username %}">Dashboard</a>
+          {% endif %}
+          <a href="{% url 'logout' %}">Logout</a>
         </div>
+        {% else %}
+        <button onclick="openLoginModal()">Log In</button>
+        <button onclick="openSignUpModal()">Sign Up</button>
+        {% endif %}
+      </div>
     </div>
 
-
-    <hr>
+    <hr />
 
     <center>
-        <p style="padding-top:10px">Every possible User on Internet has created account on this site.<br>
-        <b>Registered Users: 8400+</b><br>
-        <b>Total Posts: 100000+</b><br>
-        <b>Current Online Users🟢: 90</b></p>
+      <p style="padding-top: 10px">
+        Every possible User on Internet has created account on this site.<br />
+        <b>Registered Users: 8400+</b><br />
+        <b>Total Posts: 100000+</b><br />
+        <b>Current Online Users🟢: 90</b>
+      </p>
     </center>
 
-    <hr>
-
+    <hr />
 
     <div class="posts">
-        <div class="post-header">
-            <select class="dropdown">
-                <option value="latest">Latest</option>
-                <option value="old">Old</option>
-                <option value="datewise">Datewise</option>
-                <option value="top">Top</option>
-                <option value="newest">Newest</option>
-                <option value="popular">Popular</option>
-                <option value="unpopular">Unpopular</option>
-            </select>
-            <button class="create-post-button" onclick="create_post()">Create a Post</button>
-            
-        </div>
-        
-        <div class="posts-container">
-            <h2>Recent Posts</h2>
-            {% if posts %}
-            {% for post in posts %}
-                <div class="post-container">
-                    <h2><a href="{% url 'post' post.post_id %}">{{ post.post_title }}</a></h2>
-                </div>
-            {% endfor %}
-            {% endif %}
-        </div>
+      <div class="post-header">
+        <select class="dropdown">
+          <option value="latest">Latest</option>
+          <option value="old">Old</option>
+          <option value="datewise">Datewise</option>
+          <option value="top">Top</option>
+          <option value="newest">Newest</option>
+          <option value="popular">Popular</option>
+          <option value="unpopular">Unpopular</option>
+        </select>
+        <button class="create-post-button" onclick="create_post()">
+          Create a Post
+        </button>
+      </div>
 
+      <div class="posts-container">
+        <h2>Recent Posts</h2>
+        {% if posts %} {% for post in posts %}
+        <div class="post-container">
+          <h2>
+            <a href="{% url 'post' post.post_id %}">{{ post.post_title }}</a>
+          </h2>
+        </div>
+        {% endfor %} {% endif %}
+      </div>
 
-                <!-- <div class="post-content">
+      <!-- <div class="post-content">
                     <img src="user1.jpg" alt="User 1">
                     <a href="#post1">How to create more than one type of variable?</a>
                 </div>
@@ -89,73 +99,79 @@
                 <div class="meta-info">Replies: 10 Views: 100</div>
                 <div class="creation-date">Created on: 6/27/2024</div>
             </div> -->
-            
-        
-        <div class="load-more">
-            <button>Load More</button>
-        </div>
+
+      <div class="load-more">
+        <button>Load More</button>
+      </div>
     </div>
 
     <div class="date-display" id="currentDate"></div>
 
     <!-- Login Modal -->
     <div id="loginModal" class="modal">
-        <div class="modal-content" >
-            <span class="close" onclick="closeModal('loginModal')">&times;</span>
-            <h2>Log In</h2>
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('loginModal')">&times;</span>
+        <h2>Log In</h2>
 
-            {% if login_error %}
-                    <div class="alert">
-                        {{ login_error }}
-                    </div>
-                {% endif %}
+        {% if login_error %}
+        <div class="alert">{{ login_error }}</div>
+        {% endif %}
 
-            <form action="{% url 'login' %}" method="post">
-                
-                {% csrf_token %}
-                <button>Sign in with Google</button>
-                <input type="text" placeholder="Username" name="username">
-                <input type="password" placeholder="Password" name="password">
-                <div class="remember-me">
-                    <input type="checkbox" id="rememberMe" name="rememberMe">
-                    <label for="rememberMe">Remember me</label>
-                </div>
+        <form action="{% url 'login' %}" method="post">
+          {% csrf_token %}
+          <button>Sign in with Google</button>
+          <input type="text" placeholder="Username" name="username" />
+          <input type="password" placeholder="Password" name="password" />
+          <div class="remember-me">
+            <input type="checkbox" id="rememberMe" name="rememberMe" />
+            <label for="rememberMe">Remember me</label>
+          </div>
 
-                <button type="submit">Sign In</button>
-            </form>
-            <a href="#" class="forgot-password">Forgot Password?</a>
-            <p class="sign-up">Don't have an account? <a href="#" onclick="openSignUpModal()">Sign Up</a></p>
-        </div>
+          <button type="submit">Sign In</button>
+        </form>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+        <p class="sign-up">
+          Don't have an account?
+          <a href="#" onclick="openSignUpModal()">Sign Up</a>
+        </p>
+      </div>
     </div>
 
     <!-- Sign Up Modal -->
     <div id="signUpModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('signUpModal')">&times;</span>
-            <h2>Sign Up</h2>
-            {% if signup_error %}
-                <div class="alert">
-                    {{ signup_error }}
-                </div>
-            {% endif %}
-            <form action="{% url 'register' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <button>Sign in with Google</button>
-                <input type="text" name="username" placeholder="Username">
-                <input type="email" name="email" placeholder="Email">
-                <input type="password" name="password" placeholder="Password">
-                <!-- <input type="file" name="profile_pic" placeholder="Profile Picture"> -->
-                <div class="terms">
-                    <input type="checkbox" id="acceptTerms" name="acceptTerms">
-                    <label for="acceptTerms">I accept the <a href="#">Privacy Policy</a> and <a href="#">Terms of Service</a></label>
-                </div>
-                <button type="submit">Sign Up</button>
-            </form>
-            <p class="log-in">Already have an account? <a href="#" onclick="openLoginModal()">Log In</a></p>
-        </div>
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('signUpModal')">&times;</span>
+        <h2>Sign Up</h2>
+        {% if signup_error %}
+        <div class="alert">{{ signup_error }}</div>
+        {% endif %}
+        <form
+          action="{% url 'register' %}"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          {% csrf_token %}
+          <button>Sign in with Google</button>
+          <input type="text" name="username" placeholder="Username" />
+          <input type="email" name="email" placeholder="Email" />
+          <input type="password" name="password" placeholder="Password" />
+          <!-- <input type="file" name="profile_pic" placeholder="Profile Picture"> -->
+          <div class="terms">
+            <input type="checkbox" id="acceptTerms" name="acceptTerms" />
+            <label for="acceptTerms"
+              >I accept the <a href="#">Privacy Policy</a> and
+              <a href="#">Terms of Service</a></label
+            >
+          </div>
+          <button type="submit">Sign Up</button>
+        </form>
+        <p class="log-in">
+          Already have an account?
+          <a href="#" onclick="openLoginModal()">Log In</a>
+        </p>
+      </div>
     </div>
 
     <script src="{% static 'js/scripts.js' %}"></script>
-</body>
+  </body>
 </html>
-

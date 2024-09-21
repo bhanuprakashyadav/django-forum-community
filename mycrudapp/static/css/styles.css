@@ -1,464 +1,457 @@
 .create-post-container {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    max-width: 800px;
-    background: #fff;
-   
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 800px;
+  background: #fff;
 }
 .create-post-container h2 {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .create-post-container textarea {
-    width: 100%;
-    min-height: 200px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-
+  width: 100%;
+  min-height: 200px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .create-post-container .formatting-buttons {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 .create-post-container .formatting-buttons button {
-    margin-right: 10px;
-    padding: 5px 10px;
-    font-size: 1em;
+  margin-right: 10px;
+  padding: 5px 10px;
+  font-size: 1em;
 }
 .create-post-container .create-button {
-    padding: 10px 20px;
-    font-size: 1.2em;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 .create-post-container .create-button:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Profile Section Styles */
 .profile-section {
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center; /* Center align contents of the profile section */
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center; /* Center align contents of the profile section */
 }
 
 .profile-picture {
-    display: inline-flex; /* Use inline-flex to center align the picture and button */
-    align-items: center;
-    justify-content: center; /* Center align horizontally */
-    gap: 10px;
-    margin-bottom: 20px;
+  display: inline-flex; /* Use inline-flex to center align the picture and button */
+  align-items: center;
+  justify-content: center; /* Center align horizontally */
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .profile-picture img {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    cursor: pointer; /* Indicate that the profile picture is clickable */
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  cursor: pointer; /* Indicate that the profile picture is clickable */
 }
 
 .change-picture-button {
-    display: none; /* Hide this button as it's not needed */
+  display: none; /* Hide this button as it's not needed */
 }
 
 .profile-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .profile-form label {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .profile-form input {
-    padding: 8px;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .profile-form button {
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-
 .account-created {
-    margin-top: 10px;
-    font-style: italic;
-    color: #666;
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
 }
 
 .light-mode input {
-    color: #fff; /* Text color */
-    /*background-color: #eee; /* Background color */
-    border-color: #ddd; /* Border color */
+  color: #fff; /* Text color */
+  /*background-color: #eee; /* Background color */
+  border-color: #ddd; /* Border color */
 }
 
 .dark-mode input {
-    color: #333; /* Text color */
-   /* background-color: #333; /* Background color */
-    border-color: #555; /* Border color */
+  color: #333; /* Text color */
+  /* background-color: #333; /* Background color */
+  border-color: #555; /* Border color */
 }
 
-p, h1, h2, small, span {
-    color: var(--font-color);
-  }
+p,
+h1,
+h2,
+small,
+span {
+  color: var(--font-color);
+}
 
 body {
-    background-color: var(--bg-color);
-    color: var(--font-color);
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 .logo-name {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
 }
 .title-container {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 .logo-name h1 {
-    margin: 0;
-    padding-left: 5px;
+  margin: 0;
+  padding-left: 5px;
 }
 .button-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
 }
 .search-bar {
-    padding: 3px;
-    font-size: 1em;
+  padding: 3px;
+  font-size: 1em;
 }
 .create-post-button {
-    padding: 5px 10px;
-    font-size: 1em;
-    margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 1em;
+  margin-left: 10px;
 }
 .posts {
-    padding: 20px;
+  padding: 20px;
 }
 .post-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .post-header h2 {
-    margin: 0;
+  margin: 0;
 }
 .dropdown {
-    margin-left: 20px;
-    padding: 5px;
-    font-size: 1em;
+  margin-left: 20px;
+  padding: 5px;
+  font-size: 1em;
 }
 .post-items {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
 }
 .post-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    max-width: 600px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
 }
 .profile-button {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
 .profile-button img {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }
 .profile-button span {
-    font-size: 1.2em;
-    color: var(--font-color);
+  font-size: 1.2em;
+  color: var(--font-color);
 }
 .post-content {
-    display: flex;
-    align-items: center;
-    flex: 1;
+  display: flex;
+  align-items: center;
+  flex: 1;
 }
 
 .reply-form {
-    position: relative; /* Ensure that the button is positioned relative to the form */
-    display: flex;
-    flex-direction: column;
-    width: fit-content; /* Adjust the width as needed */
+  position: relative; /* Ensure that the button is positioned relative to the form */
+  display: flex;
+  flex-direction: column;
+  width: fit-content; /* Adjust the width as needed */
 }
-.reply-form button
-{
-    margin-top: 20px;
+.reply-form button {
+  margin-top: 20px;
 }
 
 .reply {
-    margin-left: 50px; /* Adjust the value as needed */
-    position: relative; /* This allows absolute positioning of child elements */
-    padding: 10px;
-    /*border: 1px solid #ddd;*/
-    margin-bottom: 10px;
-    background-color: var(--bg-color); /* Adjust based on theme */
+  margin-left: 50px; /* Adjust the value as needed */
+  position: relative; /* This allows absolute positioning of child elements */
+  padding: 10px;
+  /*border: 1px solid #ddd;*/
+  margin-bottom: 10px;
+  background-color: var(--bg-color); /* Adjust based on theme */
 }
 
 /* Style the three dots */
 .dropdownbtn {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    top: 4px;
-    right: 10px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    gap: 1px; /* Space between dots */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 4px;
+  right: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 1px; /* Space between dots */
 }
 
 .dropdownbtn li {
-    width: 5px; /* Width of each dot */
-    height: 5px; /* Height of each dot */
-    background-color: var(--font-color); /* Color of the dots */
-    border-radius: 50%; /* Make the dots round */
+  width: 5px; /* Width of each dot */
+  height: 5px; /* Height of each dot */
+  background-color: var(--font-color); /* Color of the dots */
+  border-radius: 50%; /* Make the dots round */
 }
 
 /* Style the dropdown menu */
 .dropdownPost-content {
-    display: none; /* Hide menu by default */
-    position: absolute;
-    top: 25px; /* Adjust based on the position of dots */
-    right: 4px;
-    background-color: #fff; /* Background color of menu */
-    border: 1px solid #ddd; /* Border around menu */
-    /*box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: add shadow */
-    z-index: 1000; /* Ensure dropdown is on top */
+  display: none; /* Hide menu by default */
+  position: absolute;
+  top: 25px; /* Adjust based on the position of dots */
+  right: 4px;
+  background-color: #fff; /* Background color of menu */
+  border: 1px solid #ddd; /* Border around menu */
+  /*box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: add shadow */
+  z-index: 1000; /* Ensure dropdown is on top */
 }
 
 .dropdownPost-content a {
-    display: block;
-    padding: 8px 12px;
-    text-decoration: none;
-    color: #000; /* Text color of menu items */
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #000; /* Text color of menu items */
 }
 
 .dropdownPost-content a:hover {
-    background-color: #f0f0f0; /* Background color on hover */
+  background-color: #f0f0f0; /* Background color on hover */
 }
 
 /* Show menu when clicked */
 .dropdownbtn.show .dropdownPost-content {
-    display: block;
+  display: block;
 }
 
-#pls-login
-{
-    margin-left: 8px;
+#pls-login {
+  margin-left: 8px;
 }
 
 #reply_text {
-    margin-left: 50px;
-    width: 500px; /* Makes the textarea take the full width of its container */
-    height: 50px; /* Sets the height to 150px */
-    padding: 10px;
-    margin-bottom: 5px;
-    resize: none;
-    color: var(--font-color);
-    background-color: var(--bg-color);
-    font-size: 16px; /* Adjusts the font size */
-    /* Add space at the bottom to avoid overlapping with the button */
-    
+  margin-left: 50px;
+  width: 500px; /* Makes the textarea take the full width of its container */
+  height: 50px; /* Sets the height to 150px */
+  padding: 10px;
+  margin-bottom: 5px;
+  resize: none;
+  color: var(--font-color);
+  background-color: var(--bg-color);
+  font-size: 16px; /* Adjusts the font size */
+  /* Add space at the bottom to avoid overlapping with the button */
 }
 
-#reply_text::placeholder
-{
-    color: var(--font-color);
-    
+#reply_text::placeholder {
+  color: var(--font-color);
 }
 
 .reply-form button {
-    position: absolute;
-    width: 90px;
-    right: 10px; /* Position the button 10px from the right of the textarea */
-    bottom: 10px; /* Position the button 10px from the bottom of the textarea */
+  position: absolute;
+  width: 90px;
+  right: 10px; /* Position the button 10px from the right of the textarea */
+  bottom: 10px; /* Position the button 10px from the bottom of the textarea */
 }
 
-#post-title
-{
-    margin-left: 10px;
+#post-title {
+  margin-left: 10px;
 }
 
 .post-item img {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
 .post-item a {
-    text-decoration: none;
-    color: #333;
-    flex: 1;
+  text-decoration: none;
+  color: #333;
+  flex: 1;
 }
 .post-item a:hover {
-    text-decoration: underline;
-    color: #007BFF;
+  text-decoration: underline;
+  color: #007bff;
 }
 .star-button {
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    cursor: pointer;
-    color: #ccc;
-    margin-left: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #ccc;
+  margin-left: 10px;
 }
 .star-button.active {
-    color: gold;
+  color: gold;
 }
 .meta-info {
-    position: absolute;
-    bottom: 5px;
-    left: 10px;
-    font-size: 0.8em;
-    color: #666;
+  position: absolute;
+  bottom: 5px;
+  left: 10px;
+  font-size: 0.8em;
+  color: #666;
 }
 .creation-date {
-    position: absolute;
-    bottom: 5px;
-    right: 10px;
-    font-size: 0.8em;
-    color: #666;
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  font-size: 0.8em;
+  color: #666;
 }
 .load-more {
-    text-align: center;
-    margin-top: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 .date-display {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    font-size: 0.8em;
-    color: #666;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  font-size: 0.8em;
+  color: #666;
 }
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 .modal-content {
-    background-color: var(--bg-color);
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 10px;
+  background-color: var(--bg-color);
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
 }
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
 }
 .close:hover,
 .close:focus {
-    color: black;
-    text-decoration: none;
+  color: black;
+  text-decoration: none;
 }
 .modal h2 {
-    margin-top: 0;
+  margin-top: 0;
 }
 .modal button,
 .modal input[type="text"],
 .modal input[type="password"],
 .modal input[type="email"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 .modal .remember-me,
 .modal .terms {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 .modal .forgot-password,
 .modal .sign-up,
 .modal .log-in {
-    display: block;
-    margin-top: 10px;
-    text-align: center;
+  display: block;
+  margin-top: 10px;
+  text-align: center;
 }
 
 /* Dropdown styles */
 .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: white;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    z-index: 1;
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  z-index: 1;
 }
 
 .dropdown-menu a {
-    display: block;
-    padding: 10px 20px;
-    color: #333;
-    text-decoration: none;
+  display: block;
+  padding: 10px 20px;
+  color: #333;
+  text-decoration: none;
 }
 
 #logo-link {
-    text-decoration: none;
-    color:inherit;
+  text-decoration: none;
+  color: inherit;
 }
 .dropdown-menu a:hover {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
 
 .dark-mode {
-    --font-color: #fff;
-    --bg-color: #333;
+  --font-color: #fff;
+  --bg-color: #333;
 }
 
-.light-mode
-{
-    --font-color: #333;
-    --bg-color: #fff;
+.light-mode {
+  --font-color: #333;
+  --bg-color: #fff;
 }
-
