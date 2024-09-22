@@ -37,6 +37,7 @@ def index(request: HttpRequest):
 
 
 def login(request: HttpRequest):
+
     posts = PostField.objects.all().order_by('-created_at')
     context = {'posts': posts,
                'login_error': 'Username or password field is missing'}
