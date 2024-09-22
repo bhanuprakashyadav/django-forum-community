@@ -39,18 +39,17 @@
   background-color: #0056b3;
 }
 
-/* Profile Section Styles */
 .profile-section {
   padding: 20px;
   max-width: 600px;
   margin: 0 auto;
-  text-align: center; /* Center align contents of the profile section */
+  text-align: center;
 }
 
 .profile-picture {
-  display: inline-flex; /* Use inline-flex to center align the picture and button */
+  display: inline-flex;
   align-items: center;
-  justify-content: center; /* Center align horizontally */
+  justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -59,11 +58,11 @@
   border-radius: 50%;
   width: 80px;
   height: 80px;
-  cursor: pointer; /* Indicate that the profile picture is clickable */
+  cursor: pointer;
 }
 
 .change-picture-button {
-  display: none; /* Hide this button as it's not needed */
+  display: none;
 }
 
 .profile-form {
@@ -100,15 +99,15 @@
 }
 
 .light-mode input {
-  color: #fff; /* Text color */
-  /*background-color: #eee; /* Background color */
-  border-color: #ddd; /* Border color */
+  color: #fff;
+
+  border-color: #ddd;
 }
 
 .dark-mode input {
-  color: #333; /* Text color */
-  /* background-color: #333; /* Background color */
-  border-color: #555; /* Border color */
+  color: #333;
+
+  border-color: #555;
 }
 
 p,
@@ -211,25 +210,24 @@ body {
 }
 
 .reply-form {
-  position: relative; /* Ensure that the button is positioned relative to the form */
+  position: relative;
   display: flex;
   flex-direction: column;
-  width: fit-content; /* Adjust the width as needed */
+  width: fit-content;
 }
 .reply-form button {
   margin-top: 20px;
 }
 
 .reply {
-  margin-left: 50px; /* Adjust the value as needed */
-  position: relative; /* This allows absolute positioning of child elements */
+  margin-left: 50px;
+  position: relative;
   padding: 10px;
-  /*border: 1px solid #ddd;*/
+
   margin-bottom: 10px;
-  background-color: var(--bg-color); /* Adjust based on theme */
+  background-color: var(--bg-color);
 }
 
-/* Style the three dots */
 .dropdownbtn {
   list-style: none;
   padding: 0;
@@ -240,40 +238,38 @@ body {
   cursor: pointer;
   display: flex;
   flex-direction: row;
-  gap: 1px; /* Space between dots */
+  gap: 1px;
 }
 
 .dropdownbtn li {
-  width: 5px; /* Width of each dot */
-  height: 5px; /* Height of each dot */
-  background-color: var(--font-color); /* Color of the dots */
-  border-radius: 50%; /* Make the dots round */
+  width: 5px;
+  height: 5px;
+  background-color: var(--font-color);
+  border-radius: 50%;
 }
 
-/* Style the dropdown menu */
 .dropdownPost-content {
-  display: none; /* Hide menu by default */
+  display: none;
   position: absolute;
-  top: 25px; /* Adjust based on the position of dots */
+  top: 25px;
   right: 4px;
-  background-color: #fff; /* Background color of menu */
-  border: 1px solid #ddd; /* Border around menu */
-  /*box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: add shadow */
-  z-index: 1000; /* Ensure dropdown is on top */
+  background-color: #fff;
+  border: 1px solid #ddd;
+
+  z-index: 1000;
 }
 
 .dropdownPost-content a {
   display: block;
   padding: 8px 12px;
   text-decoration: none;
-  color: #000; /* Text color of menu items */
+  color: #000;
 }
 
 .dropdownPost-content a:hover {
-  background-color: #f0f0f0; /* Background color on hover */
+  background-color: #f0f0f0;
 }
 
-/* Show menu when clicked */
 .dropdownbtn.show .dropdownPost-content {
   display: block;
 }
@@ -284,15 +280,14 @@ body {
 
 #reply_text {
   margin-left: 50px;
-  width: 500px; /* Makes the textarea take the full width of its container */
-  height: 50px; /* Sets the height to 150px */
+  width: 500px;
+  height: 50px;
   padding: 10px;
   margin-bottom: 5px;
   resize: none;
   color: var(--font-color);
   background-color: var(--bg-color);
-  font-size: 16px; /* Adjusts the font size */
-  /* Add space at the bottom to avoid overlapping with the button */
+  font-size: 16px;
 }
 
 #reply_text::placeholder {
@@ -302,8 +297,8 @@ body {
 .reply-form button {
   position: absolute;
   width: 90px;
-  right: 10px; /* Position the button 10px from the right of the textarea */
-  bottom: 10px; /* Position the button 10px from the bottom of the textarea */
+  right: 10px;
+  bottom: 10px;
 }
 
 #post-title {
@@ -419,7 +414,6 @@ body {
   text-align: center;
 }
 
-/* Dropdown styles */
 .dropdown-menu {
   display: none;
   position: absolute;

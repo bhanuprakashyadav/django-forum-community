@@ -4,59 +4,11 @@ from .models import UserField, PostField, ReplyField
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, update_session_auth_hash
+from django.contrib.auth import authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from .forms import *  # for form validation
+from .forms import *
 import json
-
-"""
-To add to group programatically
-
-admin_group, _ = Group.objects.get_or_create(name='Admin')
-moderator_group, _ = Group.objects.get_or_create(name='Moderator')
-user_group, _ = Group.objects.get_or_create(name='User')
-
-this will create group
-
-
-
-admin_permissions = Permission.objects.all()  # Admin gets all permissions
-moderator_permissions = [
-    Permission.objects.get(codename='can_delete_any_post'),
-    Permission.objects.get(codename='can_delete_any_reply'),
-]
-
-this will assign permissions to group
-
-# Add permissions to groups
-admin_group.permissions.set(admin_permissions)
-moderator_group.permissions.set(moderator_permissions)
-
-this will add permission to group
-
-
-to assign users to the group you want
-    def assign_user_to_group(user, group_name):
-        group = Group.objects.get(name=group_name)
-        user.groups.add(group)
-
-check for permission
-
- if request.user.has_perm('myapp.can_delete_any_post')
-
-
-"""
-
-
-# -------------------------------COME BACK AFTER WATCHING SYSTEM DESIGN ALL VIDEOS.-----------------------------
-
-# Handle AJAX query
-# https://www.geeksforgeeks.org/how-to-make-ajax-call-from-javascript/
-"""
-
-AJAX (Asynchronous JavaScript and XML) is a technique used to create dynamic and interactive web applications. It allows web pages to be updated asynchronously by exchanging small amounts of data with the server behind the scenes. This means that parts of a web page can be updated without reloading the entire page.
-"""
 
 
 def index(request: HttpRequest):
@@ -70,21 +22,16 @@ def index(request: HttpRequest):
     }
 
     if request.user.is_authenticated:
-        print("I'm authenticated")
         try:
             user_field = UserField.objects.get(user=request.user)
         except UserField.DoesNotExist:
-            # If UserField doesn't exist, create one
+
             user_field = UserField.objects.create(
                 user=request.user, usrname=request.user.username)
 
         context['user_field'] = user_field
         context['profile_pic'] = user_field.profile_pic.url if user_field.profile_pic else None
         context['posts'] = posts
-        # Debug
-        print(f"Profile pic -> {context['profile_pic']}")
-        print(f"The user field is -> {context['user_field']}")
-        print(f"The post field is -> {context['posts']}")
 
     return render(request, 'index.html', context)
 
@@ -95,7 +42,7 @@ def login(request: HttpRequest):
                'login_error': 'Username or password field is missing'}
     if request.method == 'POST':
         try:
-            username = request.POST['username']  # name='username' in html
+            username = request.POST['username']
             password = request.POST['password']
             rememberMe = request.POST.get('rememberMe') == 'on'
         except KeyError:
@@ -116,15 +63,11 @@ def login(request: HttpRequest):
                 request.session.set_expiry(1209600)
                 auth.login(request, user)
                 return redirect('/')
-            # return redirect('index')
+
             else:
                 return render(request, 'index.html', context)
 
     return render(request, 'index.html', context)
-    # return redirect('index') #'index' defined in urls
-
-# More info - https://docs.djangoproject.com/en/5.0/topics/auth/default/
-# User (model) - https://docs.djangoproject.com/en/5.0/ref/contrib/auth/#django.contrib.auth.models.User
 
 
 def register(request):
@@ -135,18 +78,15 @@ def register(request):
         email = request.POST['email']
         isAgreed = request.POST.get('acceptTerms') == 'on'
 
-        # Check if the username or email already exists and if terms are agreed
         if User.objects.filter(email=email).exists() or User.objects.filter(username=username).exists():
             return render(request, 'index.html', {'signup_error': 'Username or Email already exists', 'posts': posts})
 
         if not isAgreed:
             return render(request, 'index.html', {'signup_error': 'Please agree to the terms and conditions', 'posts': posts})
 
-        # Create the User instance
         user = User.objects.create_user(
             username=username, password=password, email=email)
 
-        # Create the UserField instance
         user_field = UserField.objects.create(
             user=user, usrname=username, has_agreed=isAgreed)
         user_field.save()
@@ -154,7 +94,7 @@ def register(request):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            # Log the user in immediately after registration
+
             auth.login(request, user)
             return redirect('/')
         else:
@@ -183,11 +123,8 @@ def create_post(request):
             title = form.cleaned_data['post_title']
             description = form.cleaned_data['description']
 
-            # Get or create the UserField instance
             user_field = UserField.objects.filter(user=request.user).first()
-            # user_field, created = UserField.objects.get_or_create(user=request.user)
 
-            # Create a new PostField instance
             new_post = PostField.objects.create(
                 user=user_field, post_title=title, description=description)
             new_post.save()
@@ -197,29 +134,22 @@ def create_post(request):
             print(form.errors)
     else:
         form = PostForm()
-    return render(request, 'create_post.html', {'form': form})
+    return render(request, 'Create_Post.html', {'form': form})
 
 
 def post(request: HttpRequest, post_id):
     post = get_object_or_404(PostField, post_id=post_id)
     replies = post.replies.all().order_by('-created_at')
-    # Set up pagination
-    paginator = Paginator(replies, 2)  # Show 2 replies per page,
-    page = request.GET.get('page', 1)  # Get current page from URL
-    try:
-        """
-        https://www.geeksforgeeks.org/how-to-add-pagination-in-django-project/
 
-        The first argument is the list of objects which will be distributed over pages.
-        The second argument denotes the number of objects that will be displayed on each page.
-        These two arguments are required.
-        """
+    paginator = Paginator(replies, 2)
+    page = request.GET.get('page', 1)
+    try:
         paginated_replies = paginator.page(page)
     except PageNotAnInteger:
-        # if page_number is not an integer then assign the first page
+
         paginated_replies = paginator.page(1)
     except EmptyPage:
-        # # if page is empty then return last page
+
         paginated_replies = paginator.page(paginator.num_pages)
     context = {}
     if request.method == 'POST':
@@ -236,32 +166,20 @@ def post(request: HttpRequest, post_id):
     context['post'] = post
     context['replies'] = paginated_replies
     context['reply_form'] = reply_form
-    return render(request, 'post_bp.html', context)
-
-# https://docs.djangoproject.com/en/5.0/ref/templates/api/#built-in-template-context-processors
+    return render(request, 'Post.html', context)
 
 
 @login_required
 def dashboard_view(request: HttpRequest, username: str):
-    # <a href="{% url 'dashboard_view' user.username %}">Dashboard</a>
-    # here The user object is available in both the view and the template without you having to pass it explicitly.
-    # Django's authentication middleware adds it to the request object and makes it available in templates.
-    # context = {'username': username} # 'username' = inhtml, username = the above paramter
 
-    # better to raise 404 instead of DNE
     user_field = get_object_or_404(UserField, user=request.user)
     if request.method == 'POST':
 
-        # Handle profile
         profile_pic = request.FILES.get('profile_pic')
-        print(f"I get profilepic {profile_pic}")
         if profile_pic:
             user_field.profile_pic = profile_pic
             user_field.save()
 
-        # Handle email
-
-        # Find corresp. user's email first
         get_usr = get_object_or_404(User, username=request.user.username)
 
         dashboard_email = request.POST.get('dashboard_email')
@@ -278,15 +196,9 @@ def dashboard_view(request: HttpRequest, username: str):
         dashboard_passwd = request.POST.get('dashboard_password')
         if dashboard_passwd:
 
-            # Hash the new password-- Use User.set_password() instead
-            # hashed_password = make_password(dashboard_passwd)
-
-            # Update the password
-            # updated = User.objects.filter(username=request.user.username).update(password=hashed_password)
             get_usr.set_password(dashboard_passwd)
             get_usr.save()
 
-            # Update session to prevent logout
             update_session_auth_hash(request, get_usr)
 
             print("Password changed")
@@ -300,7 +212,7 @@ def dashboard_view(request: HttpRequest, username: str):
         'account_data': user_field.usr_created_at,
         'profile_pic': user_field.profile_pic,
     }
-    return render(request, 'dashboard.html', context)
+    return render(request, 'Dashboard.html', context)
 
     ...
 
@@ -310,69 +222,31 @@ def dashboard_view(request: HttpRequest, username: str):
 def post_reply(request: HttpRequest):
 
     try:
-        data = json.loads(request.body)  # get a dict from jsavasript
-        # Get the key from frontend that is javascript. script.js will send
-        post_id = data.get('post_id')
-        reply_text = data.get('replyarea')  # after that you'll do your logic
+        data = json.loads(request.body)
 
-        # this will be used, change to post_id at <form > in html
-        # if u dont set primary_key=true in model djnaog automatically creates a id...so u use
+        post_id = data.get('post_id')
+        reply_text = data.get('replyarea')
+
         post = PostField.objects.get(id=post_id)
-       # post = PostField.objects.get(post_id=post_id)
+
         user_field = UserField.objects.get(user=request.user)
         reply = ReplyField.objects.create(
             post=post, user=user_field, reply_text=reply_text)
 
-        # Use console log to check in javascript
-        # opn console log in broweser to check
-
-        # Return to javscipt
-        print(reply_text)
-        print(request.user.username)
         return JsonResponse({'success': True, 'reply_text': reply_text, 'user': request.user.username, 'created_at': reply.created_at.strftime("%Y-%m-%d %H:%M:%S")})
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
 
-    # if request.method == 'POST' and request.user.is_authenticated and request.is_ajax:
-    #     post_id = request.POST.get('post_id')
-    #     reply_text = request.POST.get('reply_text')
 
-    #     post = PostField.objects.get(id=post_id)
-    #     reply = ReplyField.objects.create(post=post, user=request.user, reply_text=reply_text)
-
-    #     return JsonResponse({'status':'sucess', 'reply_text':reply_text, 'username':request.user.username})
-    # return JsonResponse({'status':'fail'})
-
-
-@require_POST  # Enforce POST method for this view
+@require_POST
 def views_delete_reply(request: HttpRequest, post_id, reply_id):
     """View to delete a specific reply"""
     if request.user.is_authenticated:
         try:
-            # Lookup API ref in django docs
-            # syntax to perform lookups across foreign key relationships. It allows you to traverse models in relationships, such as many-to-one, one-to-one, or many-to-many relationships.
-            # post is a ForeignKey pointing to the PostField model.
-            """
-            class ReplyField(models.Model):
-            post = models.ForeignKey(PostField, on_delete=models.CASCADE)
-            """
-            """
-            
-            Hereee, this wont Work
-                        reply = get_object_or_404(ReplyField, reply_id=reply_id, post__post_id=post_id) #This looks into the related PostField model, specifically at the post_id field of PostField. So, post__post_id=post_id means, "Get replies where the related PostField has the post_id field equal to post_id."
-                beause reply_id is not primary key
-                in models.py define it as 
-                    reply_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-                    that is include primary_key=true
-                    otherwise you ahve to use 
-                    id=reply_id
-                    where id is default primary key
-            
-            """
             reply = get_object_or_404(
-                # This looks into the related PostField model, specifically at the post_id field of PostField. So, post__post_id=post_id means, "Get replies where the related PostField has the post_id field equal to post_id."
+
                 ReplyField, id=reply_id, post__post_id=post_id)
-            # Currently being managed from Django Admin interface
+
             if request.user.has_perm('backend.can_delete_reply') and request.user.username == reply.user.usrname or request.user.has_perm('backend.can_delete_any_reply'):
                 reply.delete()
                 return JsonResponse({'success': True})
@@ -389,57 +263,6 @@ def views_delete_reply(request: HttpRequest, post_id, reply_id):
 def views_delete_post(request: HttpRequest, post_id):
     try:
         post = get_object_or_404(PostField, post_id=post_id)
-        # user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_field')
-        """
-        ---------------------------
-        class UserField(models.Model):
-    ROLE_CHOICES = [
-        ('user', 'User'),
-        ('moderator', 'Moderator'),
-        ('admin', 'Admin'),
-    ]
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_field')
-    .... other stuffs skiped
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user')
-        
-        
-        
-        
-        
-        
-        The related_name allows you to access the UserField instance associated with a User instance. So, when you call request.user.user_field,
-        you're accessing the UserField object that corresponds to the currently authenticated user.
-        
-        role:
-
-        This is the field you've added to the UserField model that indicates the role of the user (e.g., 'user', 'moderator', 'admin').
-        When you call request.user.user_field.role, you get the value of the role field for that specific user's UserField instance.
-        
-        user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_field')
-        
-        role checking - if request.user.user_field.role == 'admin'...
-        
-        assigning role
-
-        def assign_permissions(user_field):
-            if user_field.role == 'admin':
-            # Assign all permissions
-            user_field.user.user_permissions.set(Permission.objects.all())
-            
-            if user_field.role == 'moderator':
-            # Assign specific permissions for moderators
-            delete_any_post_permission = Permission.objects.get(codename='can_delete_any_post')
-            user_field.user.user_permissions.add(delete_any_post_permission)
-            
-            
-        when you create new user you can assign role to them
-        def create_user(username, password, role):
-        user = User.objects.create_user(username=username, password=password)
-        user_field = UserField.objects.create(user=user, usrname=username, role=role)
-        assign_permissions(user_field)  # Call to assign permissions based on role
-        
-        """
         if request.user.has_perm('backend.can_delete_post') and request.user.username == post.user.usrname or request.user.has_perm('backend.can_delete_any_post'):
             post.delete()
             return JsonResponse({'success': True})
@@ -452,7 +275,7 @@ def views_delete_post(request: HttpRequest, post_id):
 def _search_post(request: HttpRequest):
     query = request.GET.get('query', '')
     if query:
-        # https://www.w3schools.com/django/ref_lookups_icontains.php
+
         retrieved_post = PostField.objects.filter(post_title__icontains=query)
     else:
         retrieved_post = PostField.objects.none()

@@ -2,38 +2,35 @@ function create_post() {
   document
     .querySelector(".create-post-button")
     .addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent default form submission
+      event.preventDefault();
 
       fetch("/check_login", {
         method: "GET",
         headers: {
-          "X-Requested-With": "XMLHttpRequest", // Make it an AJAX request
+          "X-Requested-With": "XMLHttpRequest",
         },
       })
-        .then((response) => response.json()) // Resolve the promise
+        .then((response) => response.json())
         .then((data) => {
-          // If we got data
           if (data.authenticated) {
-            window.location.href = "/create_post"; // Redirect to create_post page
+            window.location.href = "/create_post";
           } else {
-            openLoginModal(); // Open the login modal
+            openLoginModal();
           }
         })
         .catch((error) => {
-          console.error("Error:", error); // Handle any errors
+          console.error("Error:", error);
         });
     });
 }
 
 function replyToPost() {
-  //sent to server that is views.py
   const form = document.querySelector(".reply-form");
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       const replyText = this.querySelector('textarea[name="replyarea"]').value;
 
-      //Gets the CSRF token, which is REQUIRED by Django to validate POST requests.
       const csrfToken = this.querySelector(
         'input[name="csrfmiddlewaretoken"]'
       ).value;
@@ -50,39 +47,21 @@ function replyToPost() {
       );
 
       fetch("/post_reply/", {
-        //A POST request is sent to the /post_reply/ endpoint using the fetch API.
         method: "POST",
 
-        /*
-                Request headers give the server information about the request:
-                 for example, the Content-Type header tells the server the format of the request's body.
-                  Many headers are set automatically by the browser and can't be set by a script:
-                   these are called Forbidden header names.
-                */
         headers: {
           "Content-Type": "application/json",
           "X-CSRFToken": csrfToken,
         },
 
-        /* 
-                    The request body is the payload of the request: it's the thing the
-                     client is sending to the server. You cannot include a body with GET requests,
-                      but it's useful for requests that send content to the server,
-                       such as POST or PUT requests. For example, 
-                       if you want to upload a file to the server, you might make a POST request
-                        and include the file as the request body.
-                        To set a request body, pass it as the body option:
-                
-                */
         body: JSON.stringify({
           post_id: postId,
           replyarea: replyText,
           reply_id: replyId,
         }),
       })
-        .then((response) => response.json()) //if PROMISE resolved
+        .then((response) => response.json())
         .then((data) => {
-          //data sent from server
           console.log("Response data:", data);
           if (data.success) {
             const newReply = document.createElement("div");
@@ -104,7 +83,7 @@ function replyToPost() {
               "Last element child is ",
               repliesContainer.lastElementChild
             );
-            //repliesContainer.appendChild(newReply);
+
             this.querySelector('textarea[name="replyarea"]').value = "";
           } else {
             throw new Error(data.message);
@@ -117,7 +96,6 @@ function replyToPost() {
   }
 }
 
-//The function replyToPost is executed when the DOM content is fully loaded
 document.addEventListener("DOMContentLoaded", replyToPost);
 
 function scrollToReply() {
@@ -140,7 +118,7 @@ function getCookie(name) {
     const cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
-      // Does this cookie string begin with the name we want?
+
       if (cookie.substring(0, name.length + 1) === name + "=") {
         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
         break;
@@ -154,10 +132,10 @@ function delete_reply(replyId, postId) {
   console.log("Deleting reply with ID:", replyId, "for post:", postId);
 
   fetch(`/post/${postId}/reply/${replyId}/delete/`, {
-    method: "POST", // You can also use 'POST', but im using DELETE here
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": getCookie("csrftoken"), // Include CSRF token for security, since it is POST, required
+      "X-CSRFToken": getCookie("csrftoken"),
     },
   })
     .then((response) => {
@@ -172,7 +150,6 @@ function delete_reply(replyId, postId) {
       );
 
       if (data.success) {
-        // Remove the reply element from the DOM
         const replyElement = document.querySelector(
           `[data-reply-id="${replyId}"]`
         );
@@ -218,7 +195,6 @@ async function check_auth() {
 }
 
 function openLoginModal() {
-  //Check if signup modal is opened if so close it
   if (document.getElementById("signUpModal").style.display === "block") {
     document.getElementById("signUpModal").style.display = "none";
   }
@@ -251,30 +227,24 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("upload-button")
     .addEventListener("click", function () {
-      //event passed here too, we just dont need
       document.getElementById("file-input").click();
     });
 
   document
     .getElementById("file-input")
     .addEventListener("change", function (event) {
-      //event passed by browser by default,
-      const fileInput = event.target; // = HTMLInputElement , file input element that triggered the change event.
+      const fileInput = event.target;
       console.log("element is " + event.target);
       if (fileInput.files && fileInput.files.length > 0) {
         const file = fileInput.files[0];
         const reader = new FileReader();
 
-        //As the file been read fully, onload, execute the callback function(e)...
         reader.onload = function (e) {
-          //event fired from selecting file
-          // convert img to base64
-          // image to the Base64-encoded data of the selected file, effectively displaying the chosen image in the browser
           document.getElementById("profile_pic").src = e.target.result;
           console.log("src is " + e.target.result);
           console.log("file is " + file);
         };
-        reader.readAsDataURL(file); //representing the file's data as a base64 encoded string.
+        reader.readAsDataURL(file);
       }
     });
 });
@@ -286,7 +256,6 @@ function showDropdown(event) {
     dropdownContent.style.display === "block" ? "none" : "block";
 }
 
-// Close dropdown if clicking outside
 window.onclick = function (event) {
   if (!event.target.matches(".dropdownbtn, .dropdownbtn *")) {
     var dropdowns = document.getElementsByClassName("dropdownPost-content");
@@ -302,14 +271,6 @@ window.onclick = function (event) {
 function formatText(command) {
   document.execCommand(command);
 }
-
-// function Cannot read properties of null (reading 'appendChild')() {
-//     var date = new Date();
-//     var options = { year: 'numeric', month: 'long', day: 'numeric' };
-//     document.getElementById('currentDate').textContent = date.toLocaleDateString('en-US', options);
-// }
-
-// displayCurrentDate();
 
 document.querySelectorAll(".star-button").forEach((button) => {
   button.addEventListener("click", function () {
@@ -336,7 +297,6 @@ document.addEventListener("click", function (event) {
 
 var themeToggle = document.getElementById("theme-toggle");
 
-// Check stored theme preference on page load
 if (window.localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark-mode");
   themeToggle.textContent = "☀️";
